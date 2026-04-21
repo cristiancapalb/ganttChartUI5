@@ -87,7 +87,7 @@
                                 }
                             }">
                             <table:columns>
-                                <table:Column width="14rem" sortProperty="employeeName" filterProperty="employeeName">
+                                <table:Column width="12rem" sortProperty="employeeName" filterProperty="employeeName">
                                     <m:Label text="{i18n>employeeGanttResourceColumn}"/>
                                     <table:template>
                                         <m:VBox class="employeeGanttResourceCell">
@@ -139,7 +139,7 @@
                                             state="{path: 'ganttModel>isOverload', formatter: '.formatAllocationValueState'}"/>
                                     </table:template>
                                 </table:Column>
-                                <table:Column width="8.5rem">
+                                <table:Column width="7.5rem">
                                     <m:Label text="{i18n>employeeGanttStatusColumn}"/>
                                     <table:template>
                                         <m:ObjectStatus
@@ -160,18 +160,22 @@
                                             }"/>
                                     </table:template>
                                 </table:Column>
-                                <table:Column width="9rem">
-                                    <m:Label text="{i18n>employeeGanttPeriodColumn}"/>
+                                <table:Column width="6.5rem" sortProperty="allocationFromDate">
+                                    <m:Label text="{i18n>employeeGanttAllocationFromColumn}"/>
                                     <table:template>
                                         <m:Text
-                                            text="{
-                                                parts: [
-                                                    {path: 'ganttModel>startDate'},
-                                                    {path: 'ganttModel>endDate'},
-                                                    {path: 'ganttModel>allocations'}
-                                                ],
-                                                formatter: '.formatPeriod'
-                                            }"/>
+                                            text="{ganttModel>allocationFromDate}"
+                                            wrapping="false"
+                                            maxLines="1"/>
+                                    </table:template>
+                                </table:Column>
+                                <table:Column width="6.5rem" sortProperty="allocationToDate">
+                                    <m:Label text="{i18n>employeeGanttAllocationToColumn}"/>
+                                    <table:template>
+                                        <m:Text
+                                            text="{ganttModel>allocationToDate}"
+                                            wrapping="false"
+                                            maxLines="1"/>
                                     </table:template>
                                 </table:Column>
                             </table:columns>

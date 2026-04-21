@@ -11,8 +11,8 @@ sap.ui.define([
     return Controller.extend("ganttchartdemo.controller.EmployeeGantt", {
         onInit: function () {
             this._aEmployees = [];
-            this._oDateTimeFormat = DateFormat.getDateTimeInstance({
-                pattern: "MMM d, yyyy HH:mm"
+            this._oDateFormat = DateFormat.getDateInstance({
+                pattern: "MMM d, yyyy"
             });
 
             var oModel = new JSONModel();
@@ -102,24 +102,12 @@ sap.ui.define([
             }
         },
 
-        formatPeriod: function (sStartDate, sEndDate, aAllocations) {
-            if (sStartDate && sEndDate) {
-                return this._formatTimestamp(sStartDate) + " - " + this._formatTimestamp(sEndDate);
-            }
-
-            if (Array.isArray(aAllocations)) {
-                return aAllocations.length + (aAllocations.length === 1 ? " allocation" : " allocations");
-            }
-
-            return "";
-        },
-
         formatAllocationTooltip: function (sProjectName, iPercentage, sStatus, sStartDate, sEndDate, bIsOverload) {
             var aLines = [
                 sProjectName,
                 "Allocation: " + iPercentage + "%",
                 "Status: " + this._toTitleCase(sStatus),
-                this._formatTimestamp(sStartDate) + " - " + this._formatTimestamp(sEndDate)
+                this._formatDateOnly(sStartDate) + " - " + this._formatDateOnly(sEndDate)
             ];
 
             if (bIsOverload) {
@@ -203,6 +191,8 @@ sap.ui.define([
 
                 aAllocations.forEach(function (oAllocation) {
                     oAllocation.employeeName = oEmployee.employeeName;
+                    oAllocation.allocationFromDate = this._formatDateOnly(oAllocation.startDate);
+                    oAllocation.allocationToDate = this._formatDateOnly(oAllocation.endDate);
                     oAllocation._shapeAllocations = [this._createShapeAllocation(oAllocation)];
                 }, this);
             }, this);
@@ -214,6 +204,8 @@ sap.ui.define([
                 projectName: oAllocation.projectName,
                 startDate: oAllocation.startDate,
                 endDate: oAllocation.endDate,
+                allocationFromDate: oAllocation.allocationFromDate,
+                allocationToDate: oAllocation.allocationToDate,
                 allocationPercentage: oAllocation.allocationPercentage,
                 status: oAllocation.status,
                 employeeName: oAllocation.employeeName,
@@ -431,10 +423,10 @@ sap.ui.define([
             return aColors[iHash % aColors.length];
         },
 
-        _formatTimestamp: function (sTimestamp) {
+        _formatDateOnly: function (sTimestamp) {
             var oDate = this.formatAbapTimestamp(sTimestamp);
 
-            return oDate ? this._oDateTimeFormat.format(oDate) : "";
+            return oDate ? this._oDateFormat.format(oDate) : "";
         },
 
         _toAbapTimestamp: function (oDate) {
