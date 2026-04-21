@@ -1,0 +1,454 @@
+sap.ui.define([
+    "sap/ui/core/mvc/Controller",
+    "sap/ui/model/json/JSONModel",
+    "sap/gantt/misc/Format",
+    "sap/gantt/config/TimeHorizon",
+    "sap/m/MessageToast",
+    "sap/ui/core/format/DateFormat"
+], function (Controller, JSONModel, GanttFormat, TimeHorizon, MessageToast, DateFormat) {
+    "use strict";
+
+    return Controller.extend("ganttchartdemo.controller.EmployeeGantt", {
+        onInit: function () {
+            this._aEmployees = [];
+            this._oDateTimeFormat = DateFormat.getDateTimeInstance({
+                pattern: "MMM d, yyyy HH:mm"
+            });
+
+            var oModel = new JSONModel();
+            oModel.attachRequestCompleted(this._onAllocationDataLoaded, this);
+            oModel.attachRequestFailed(this._onAllocationDataFailed, this);
+            oModel.loadData(sap.ui.require.toUrl("ganttchartdemo/model/employeeAllocations.json"));
+            this.getView().setModel(oModel, "ganttModel");
+        },
+
+        _onAllocationDataLoaded: function (oEvent) {
+            if (oEvent.getParameter("success") === false) {
+                this._onAllocationDataFailed();
+                return;
+            }
+
+            var oModel = this.getView().getModel("ganttModel");
+            var aEmployees = oModel.getProperty("/employees") || [];
+
+            this._prepareEmployees(aEmployees);
+            this._aEmployees = this._clone(aEmployees);
+            oModel.setProperty("/employees", aEmployees);
+            this._expandEmployeeRows();
+        },
+
+        _onAllocationDataFailed: function () {
+            MessageToast.show("Employee allocation data could not be loaded.");
+        },
+
+        formatAbapTimestamp: function (sTimestamp) {
+            return sTimestamp ? GanttFormat.abapTimestampToDate(sTimestamp) : null;
+        },
+
+        formatRowId: function (sEmployeeId, sAllocationId) {
+            return sEmployeeId || sAllocationId || "";
+        },
+
+        formatRowTitle: function (sEmployeeName, sProjectName) {
+            return sEmployeeName || sProjectName || "";
+        },
+
+        formatRowText: function (sEmployeeId, sAllocationId, sRole) {
+            if (sEmployeeId) {
+                return sRole ? sEmployeeId + " - " + sRole : sEmployeeId;
+            }
+
+            return sAllocationId || "";
+        },
+
+        formatAllocationNumber: function (iPercentage) {
+            return iPercentage || iPercentage === 0 ? String(iPercentage) : "";
+        },
+
+        formatAllocationUnit: function (iPercentage) {
+            return iPercentage || iPercentage === 0 ? "%" : "";
+        },
+
+        formatAllocationValueState: function (bIsOverload) {
+            return bIsOverload ? "Error" : "None";
+        },
+
+        formatStatusText: function (sStatus, sOverloadText) {
+            if (sStatus) {
+                return this._toTitleCase(sStatus);
+            }
+
+            return sOverloadText || "";
+        },
+
+        formatStatusState: function (sStatus, bOverloaded, bAllocationOverloaded) {
+            if (bOverloaded || bAllocationOverloaded) {
+                return "Error";
+            }
+
+            switch (sStatus) {
+                case "confirmed":
+                    return "Success";
+                case "tentative":
+                    return "Warning";
+                case "planned":
+                    return "Information";
+                default:
+                    return "None";
+            }
+        },
+
+        formatPeriod: function (sStartDate, sEndDate, aAllocations) {
+            if (sStartDate && sEndDate) {
+                return this._formatTimestamp(sStartDate) + " - " + this._formatTimestamp(sEndDate);
+            }
+
+            if (Array.isArray(aAllocations)) {
+                return aAllocations.length + (aAllocations.length === 1 ? " allocation" : " allocations");
+            }
+
+            return "";
+        },
+
+        formatAllocationTooltip: function (sProjectName, iPercentage, sStatus, sStartDate, sEndDate, bIsOverload) {
+            var aLines = [
+                sProjectName,
+                "Allocation: " + iPercentage + "%",
+                "Status: " + this._toTitleCase(sStatus),
+                this._formatTimestamp(sStartDate) + " - " + this._formatTimestamp(sEndDate)
+            ];
+
+            if (bIsOverload) {
+                aLines.push("Capacity exceeds 100% during an overlap.");
+            }
+
+            return aLines.join("\n");
+        },
+
+        formatAllocationFill: function (sStatus, sProjectName, bIsOverload) {
+            if (bIsOverload) {
+                return "sapUiNegativeElement";
+            }
+
+            var mStatusColors = {
+                confirmed: "sapUiAccent6",
+                tentative: "sapUiAccent2",
+                planned: "sapUiAccent7"
+            };
+
+            return mStatusColors[sStatus] || this._projectColor(sProjectName);
+        },
+
+        formatAllocationStroke: function (bIsOverload) {
+            return bIsOverload ? "sapUiNegativeText" : "sapUiContentForegroundBorderColor";
+        },
+
+        formatAllocationStrokeWidth: function (bIsOverload) {
+            return bIsOverload ? 2 : 1;
+        },
+
+        onFilterAllocations: function (oEvent) {
+            var sQuery = oEvent.getParameter("query") || oEvent.getParameter("newValue") || "";
+            var aEmployees = this._filterEmployees(sQuery);
+            var oModel = this.getView().getModel("ganttModel");
+
+            oModel.setProperty("/employees", aEmployees);
+            this._expandEmployeeRows();
+        },
+
+        onZoomPeriodChange: function (oEvent) {
+            var sKey = oEvent.getSource().getSelectedKey();
+            this._setVisibleHorizon(sKey);
+        },
+
+        onShapeSelectionChange: function (oEvent) {
+            var aShapeIds = oEvent.getSource().getSelectedShapeId();
+
+            if (!aShapeIds.length) {
+                return;
+            }
+
+            var oAllocation = this._findAllocationById(aShapeIds[aShapeIds.length - 1]);
+
+            if (oAllocation) {
+                MessageToast.show(
+                    oAllocation.employeeName + " - " +
+                    oAllocation.projectName + " (" +
+                    oAllocation.allocationPercentage + "%)"
+                );
+            }
+        },
+
+        _prepareEmployees: function (aEmployees) {
+            aEmployees.forEach(function (oEmployee) {
+                var aAllocations = oEmployee.allocations || [];
+
+                aAllocations.forEach(function (oAllocation) {
+                    oAllocation.isOverload = false;
+                });
+
+                var iPeakAllocation = this._markOverloadedAllocations(aAllocations);
+
+                oEmployee.maxConcurrentAllocationPercentage = iPeakAllocation;
+                oEmployee.overloaded = iPeakAllocation > 100;
+                oEmployee.overloadText = oEmployee.overloaded ?
+                    "Overloaded (" + iPeakAllocation + "%)" :
+                    "Within capacity";
+                oEmployee.allocationCount = aAllocations.length;
+
+                aAllocations.forEach(function (oAllocation) {
+                    oAllocation.employeeName = oEmployee.employeeName;
+                });
+            }, this);
+        },
+
+        _markOverloadedAllocations: function (aAllocations) {
+            var aEvents = [];
+            var aActiveAllocations = [];
+            var iPeakAllocation = 0;
+
+            aAllocations.forEach(function (oAllocation) {
+                aEvents.push({
+                    time: oAllocation.startDate,
+                    type: "start",
+                    allocation: oAllocation
+                });
+                aEvents.push({
+                    time: oAllocation.endDate,
+                    type: "end",
+                    allocation: oAllocation
+                });
+            });
+
+            aEvents.sort(function (oFirst, oSecond) {
+                if (oFirst.time === oSecond.time) {
+                    return oFirst.type === "end" ? -1 : 1;
+                }
+
+                return oFirst.time < oSecond.time ? -1 : 1;
+            });
+
+            for (var iIndex = 0; iIndex < aEvents.length;) {
+                iPeakAllocation = Math.max(iPeakAllocation, this._markActiveWindow(aActiveAllocations));
+
+                var sCurrentTime = aEvents[iIndex].time;
+                var aCurrentEvents = [];
+
+                while (iIndex < aEvents.length && aEvents[iIndex].time === sCurrentTime) {
+                    aCurrentEvents.push(aEvents[iIndex]);
+                    iIndex += 1;
+                }
+
+                aCurrentEvents.filter(function (oEvent) {
+                    return oEvent.type === "end";
+                }).forEach(function (oEvent) {
+                    var iActiveIndex = aActiveAllocations.indexOf(oEvent.allocation);
+
+                    if (iActiveIndex > -1) {
+                        aActiveAllocations.splice(iActiveIndex, 1);
+                    }
+                });
+
+                aCurrentEvents.filter(function (oEvent) {
+                    return oEvent.type === "start";
+                }).forEach(function (oEvent) {
+                    aActiveAllocations.push(oEvent.allocation);
+                });
+            }
+
+            return iPeakAllocation;
+        },
+
+        _markActiveWindow: function (aActiveAllocations) {
+            var iWindowTotal = aActiveAllocations.reduce(function (iTotal, oAllocation) {
+                return iTotal + Number(oAllocation.allocationPercentage || 0);
+            }, 0);
+
+            if (iWindowTotal > 100) {
+                aActiveAllocations.forEach(function (oAllocation) {
+                    oAllocation.isOverload = true;
+                });
+            }
+
+            return iWindowTotal;
+        },
+
+        _filterEmployees: function (sQuery) {
+            var sNormalizedQuery = String(sQuery || "").trim().toLowerCase();
+            var aEmployees = this._clone(this._aEmployees);
+
+            if (!sNormalizedQuery) {
+                this._prepareEmployees(aEmployees);
+                return aEmployees;
+            }
+
+            var aFilteredEmployees = aEmployees.reduce(function (aResult, oEmployee) {
+                var bEmployeeMatch = this._matchesEmployee(oEmployee, sNormalizedQuery);
+
+                if (!bEmployeeMatch) {
+                    oEmployee.allocations = (oEmployee.allocations || []).filter(function (oAllocation) {
+                        return this._matchesAllocation(oAllocation, sNormalizedQuery);
+                    }, this);
+                }
+
+                if (bEmployeeMatch || oEmployee.allocations.length) {
+                    aResult.push(oEmployee);
+                }
+
+                return aResult;
+            }.bind(this), []);
+
+            this._prepareEmployees(aFilteredEmployees);
+            return aFilteredEmployees;
+        },
+
+        _matchesEmployee: function (oEmployee, sQuery) {
+            return [
+                oEmployee.employeeId,
+                oEmployee.employeeName,
+                oEmployee.role,
+                oEmployee.department
+            ].some(function (sValue) {
+                return this._contains(sValue, sQuery);
+            }, this);
+        },
+
+        _matchesAllocation: function (oAllocation, sQuery) {
+            return [
+                oAllocation.allocationId,
+                oAllocation.projectName,
+                oAllocation.status,
+                String(oAllocation.allocationPercentage)
+            ].some(function (sValue) {
+                return this._contains(sValue, sQuery);
+            }, this);
+        },
+
+        _contains: function (sValue, sQuery) {
+            return String(sValue || "").toLowerCase().indexOf(sQuery) > -1;
+        },
+
+        _setVisibleHorizon: function (sPeriodKey) {
+            var oZoomStrategy = this.byId("allocationZoom");
+            var oStartDate = this._getEarliestAllocationDate();
+
+            if (!oZoomStrategy || !oStartDate) {
+                return;
+            }
+
+            var mPeriodDays = {
+                day: 1,
+                week: 7,
+                month: 31
+            };
+            var iDays = mPeriodDays[sPeriodKey] || mPeriodDays.month;
+            var oVisibleStart = new Date(oStartDate.getTime());
+            var oVisibleEnd = new Date(oStartDate.getTime());
+
+            oVisibleStart.setHours(0, 0, 0, 0);
+            oVisibleEnd.setHours(0, 0, 0, 0);
+            oVisibleEnd.setDate(oVisibleEnd.getDate() + iDays);
+            oVisibleEnd.setSeconds(oVisibleEnd.getSeconds() - 1);
+
+            oZoomStrategy.setVisibleHorizon(new TimeHorizon({
+                startTime: this._toAbapTimestamp(oVisibleStart),
+                endTime: this._toAbapTimestamp(oVisibleEnd)
+            }));
+        },
+
+        _getEarliestAllocationDate: function () {
+            var oModel = this.getView().getModel("ganttModel");
+            var aEmployees = oModel.getProperty("/employees") || [];
+            var aDates = [];
+
+            aEmployees.forEach(function (oEmployee) {
+                (oEmployee.allocations || []).forEach(function (oAllocation) {
+                    if (oAllocation.startDate) {
+                        aDates.push(this.formatAbapTimestamp(oAllocation.startDate));
+                    }
+                }, this);
+            }, this);
+
+            if (!aDates.length) {
+                return null;
+            }
+
+            return new Date(Math.min.apply(null, aDates.map(function (oDate) {
+                return oDate.getTime();
+            })));
+        },
+
+        _findAllocationById: function (sAllocationId) {
+            var oFoundAllocation = null;
+
+            this._aEmployees.some(function (oEmployee) {
+                return (oEmployee.allocations || []).some(function (oAllocation) {
+                    if (oAllocation.allocationId === sAllocationId) {
+                        oFoundAllocation = Object.assign({
+                            employeeName: oEmployee.employeeName
+                        }, oAllocation);
+                        return true;
+                    }
+
+                    return false;
+                });
+            });
+
+            return oFoundAllocation;
+        },
+
+        _projectColor: function (sProjectName) {
+            var aColors = [
+                "sapUiAccent1",
+                "sapUiAccent4",
+                "sapUiAccent5",
+                "sapUiAccent8",
+                "sapUiAccent10"
+            ];
+            var iHash = String(sProjectName || "").split("").reduce(function (iValue, sCharacter) {
+                return iValue + sCharacter.charCodeAt(0);
+            }, 0);
+
+            return aColors[iHash % aColors.length];
+        },
+
+        _formatTimestamp: function (sTimestamp) {
+            var oDate = this.formatAbapTimestamp(sTimestamp);
+
+            return oDate ? this._oDateTimeFormat.format(oDate) : "";
+        },
+
+        _toAbapTimestamp: function (oDate) {
+            return [
+                oDate.getFullYear(),
+                this._pad(oDate.getMonth() + 1),
+                this._pad(oDate.getDate()),
+                this._pad(oDate.getHours()),
+                this._pad(oDate.getMinutes()),
+                this._pad(oDate.getSeconds())
+            ].join("");
+        },
+
+        _pad: function (iValue) {
+            return String(iValue).padStart(2, "0");
+        },
+
+        _toTitleCase: function (sValue) {
+            return String(sValue || "").replace(/(^|[-_\s])\S/g, function (sMatch) {
+                return sMatch.toUpperCase();
+            });
+        },
+
+        _expandEmployeeRows: function () {
+            var oTable = this.byId("employeeAllocationTable");
+
+            if (oTable) {
+                oTable.expandToLevel(1);
+            }
+        },
+
+        _clone: function (vValue) {
+            return JSON.parse(JSON.stringify(vValue));
+        }
+    });
+});

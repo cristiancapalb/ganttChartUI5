@@ -1,0 +1,216 @@
+<mvc:View
+    controllerName="ganttchartdemo.controller.EmployeeGantt"
+    displayBlock="true"
+    height="100%"
+    xmlns="sap.gantt.simple"
+    xmlns:axistime="sap.gantt.axistime"
+    xmlns:config="sap.gantt.config"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:table="sap.ui.table"
+    xmlns:m="sap.m"
+    xmlns:rm="sap.ui.table.rowmodes">
+    <m:Page
+        id="employeeGanttPage"
+        title="{i18n>employeeGanttTitle}"
+        enableScrolling="false">
+        <m:content>
+            <GanttChartContainer
+                id="employeeGanttContainer"
+                height="100%"
+                width="100%"
+                enableTimeScrollSync="true"
+                enableCursorLine="true"
+                enableNowLine="false"
+                enableVerticalLine="true">
+                <toolbar>
+                    <ContainerToolbar
+                        showSearchButton="false"
+                        showTimeZoomControl="true"
+                        showSettingButton="true">
+                        <m:SearchField
+                            id="allocationFilter"
+                            width="18rem"
+                            placeholder="{i18n>employeeGanttFilterPlaceholder}"
+                            liveChange=".onFilterAllocations"
+                            search=".onFilterAllocations"/>
+                        <m:SegmentedButton
+                            id="zoomPeriod"
+                            selectedKey="month"
+                            selectionChange=".onZoomPeriodChange">
+                            <m:items>
+                                <m:SegmentedButtonItem key="day" text="{i18n>employeeGanttZoomDay}"/>
+                                <m:SegmentedButtonItem key="week" text="{i18n>employeeGanttZoomWeek}"/>
+                                <m:SegmentedButtonItem key="month" text="{i18n>employeeGanttZoomMonth}"/>
+                            </m:items>
+                        </m:SegmentedButton>
+                    </ContainerToolbar>
+                </toolbar>
+                <GanttChartWithTable
+                    id="employeeGantt"
+                    height="100%"
+                    width="100%"
+                    displayType="Both"
+                    selectionPanelSize="38%"
+                    shapeSelectionMode="Single"
+                    shapeSelectionChange=".onShapeSelectionChange"
+                    enableCursorLine="true"
+                    enableNowLine="false"
+                    enableVerticalLine="true">
+                    <axisTimeStrategy>
+                        <axistime:ProportionZoomStrategy
+                            id="allocationZoom"
+                            zoomLevel="3">
+                            <axistime:totalHorizon>
+                                <config:TimeHorizon
+                                    startTime="20231225000000"
+                                    endTime="20240215000000"/>
+                            </axistime:totalHorizon>
+                            <axistime:visibleHorizon>
+                                <config:TimeHorizon
+                                    startTime="20240101000000"
+                                    endTime="20240131235959"/>
+                            </axistime:visibleHorizon>
+                        </axistime:ProportionZoomStrategy>
+                    </axisTimeStrategy>
+                    <table>
+                        <table:TreeTable
+                            id="employeeAllocationTable"
+                            selectionMode="Single"
+                            selectionBehavior="RowSelector"
+                            enableColumnReordering="true"
+                            enableBusyIndicator="true"
+                            rows="{
+                                path: 'ganttModel>/employees',
+                                parameters: {
+                                    arrayNames: ['allocations'],
+                                    numberOfExpandedLevels: 1
+                                }
+                            }">
+                            <table:columns>
+                                <table:Column width="16rem" sortProperty="employeeName" filterProperty="employeeName">
+                                    <m:Label text="{i18n>employeeGanttResourceColumn}"/>
+                                    <table:template>
+                                        <m:ObjectIdentifier
+                                            title="{
+                                                parts: [
+                                                    {path: 'ganttModel>employeeName'},
+                                                    {path: 'ganttModel>projectName'}
+                                                ],
+                                                formatter: '.formatRowTitle'
+                                            }"
+                                            text="{
+                                                parts: [
+                                                    {path: 'ganttModel>employeeId'},
+                                                    {path: 'ganttModel>allocationId'},
+                                                    {path: 'ganttModel>role'}
+                                                ],
+                                                formatter: '.formatRowText'
+                                            }"/>
+                                    </table:template>
+                                </table:Column>
+                                <table:Column width="7rem" hAlign="End">
+                                    <m:Label text="{i18n>employeeGanttAllocationColumn}"/>
+                                    <table:template>
+                                        <m:ObjectNumber
+                                            number="{path: 'ganttModel>allocationPercentage', formatter: '.formatAllocationNumber'}"
+                                            unit="{path: 'ganttModel>allocationPercentage', formatter: '.formatAllocationUnit'}"
+                                            state="{path: 'ganttModel>isOverload', formatter: '.formatAllocationValueState'}"/>
+                                    </table:template>
+                                </table:Column>
+                                <table:Column width="10rem">
+                                    <m:Label text="{i18n>employeeGanttStatusColumn}"/>
+                                    <table:template>
+                                        <m:ObjectStatus
+                                            text="{
+                                                parts: [
+                                                    {path: 'ganttModel>status'},
+                                                    {path: 'ganttModel>overloadText'}
+                                                ],
+                                                formatter: '.formatStatusText'
+                                            }"
+                                            state="{
+                                                parts: [
+                                                    {path: 'ganttModel>status'},
+                                                    {path: 'ganttModel>overloaded'},
+                                                    {path: 'ganttModel>isOverload'}
+                                                ],
+                                                formatter: '.formatStatusState'
+                                            }"/>
+                                    </table:template>
+                                </table:Column>
+                                <table:Column width="13rem">
+                                    <m:Label text="{i18n>employeeGanttPeriodColumn}"/>
+                                    <table:template>
+                                        <m:Text
+                                            text="{
+                                                parts: [
+                                                    {path: 'ganttModel>startDate'},
+                                                    {path: 'ganttModel>endDate'},
+                                                    {path: 'ganttModel>allocations'}
+                                                ],
+                                                formatter: '.formatPeriod'
+                                            }"/>
+                                    </table:template>
+                                </table:Column>
+                            </table:columns>
+                            <table:rowMode>
+                                <rm:Auto minRowCount="8"/>
+                            </table:rowMode>
+                            <table:rowSettingsTemplate>
+                                <GanttRowSettings
+                                    rowId="{
+                                        parts: [
+                                            {path: 'ganttModel>employeeId'},
+                                            {path: 'ganttModel>allocationId'}
+                                        ],
+                                        formatter: '.formatRowId'
+                                    }"
+                                    shapes1="{path: 'ganttModel>allocations', templateShareable: false}">
+                                    <shapes1>
+                                        <BaseRectangle
+                                            shapeId="{ganttModel>allocationId}"
+                                            time="{path: 'ganttModel>startDate', formatter: '.formatAbapTimestamp'}"
+                                            endTime="{path: 'ganttModel>endDate', formatter: '.formatAbapTimestamp'}"
+                                            title="{ganttModel>projectName}"
+                                            tooltip="{
+                                                parts: [
+                                                    {path: 'ganttModel>projectName'},
+                                                    {path: 'ganttModel>allocationPercentage'},
+                                                    {path: 'ganttModel>status'},
+                                                    {path: 'ganttModel>startDate'},
+                                                    {path: 'ganttModel>endDate'},
+                                                    {path: 'ganttModel>isOverload'}
+                                                ],
+                                                formatter: '.formatAllocationTooltip'
+                                            }"
+                                            height="22"
+                                            rx="4"
+                                            ry="4"
+                                            fill="{
+                                                parts: [
+                                                    {path: 'ganttModel>status'},
+                                                    {path: 'ganttModel>projectName'},
+                                                    {path: 'ganttModel>isOverload'}
+                                                ],
+                                                formatter: '.formatAllocationFill'
+                                            }"
+                                            stroke="{path: 'ganttModel>isOverload', formatter: '.formatAllocationStroke'}"
+                                            strokeWidth="{path: 'ganttModel>isOverload', formatter: '.formatAllocationStrokeWidth'}"
+                                            selectable="true"
+                                            hoverable="true"
+                                            hoverFillColor="sapChart_OrderedColor_8"
+                                            hoverStrokeColor="sapContent_ForegroundBorderColor"
+                                            hoverStrokeWidth="2"
+                                            horizontalTextAlignment="Middle"
+                                            verticalTextAlignment="Center"
+                                            titleColor="sapUiContentContrastTextColor"/>
+                                    </shapes1>
+                                </GanttRowSettings>
+                            </table:rowSettingsTemplate>
+                        </table:TreeTable>
+                    </table>
+                </GanttChartWithTable>
+            </GanttChartContainer>
+        </m:content>
+    </m:Page>
+</mvc:View>

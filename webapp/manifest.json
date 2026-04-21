@@ -38,7 +38,9 @@
       "minUI5Version": "1.147.1",
       "libs": {
         "sap.m": {},
-        "sap.ui.core": {}
+        "sap.ui.core": {},
+        "sap.ui.table": {},
+        "sap.gantt": {}
       }
     },
     "contentDensities": {
@@ -79,12 +81,23 @@
           "target": [
             "TargetganttChart"
           ]
+        },
+        {
+          "name": "RouteEmployeeGantt",
+          "pattern": "employee-gantt",
+          "target": [
+            "TargetEmployeeGantt"
+          ]
         }
       ],
       "targets": {
         "TargetganttChart": {
           "id": "ganttChart",
           "name": "ganttChart"
+        },
+        "TargetEmployeeGantt": {
+          "id": "EmployeeGantt",
+          "name": "EmployeeGantt"
         }
       }
     },
