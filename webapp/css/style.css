@@ -1,1 +1,31 @@
-/* Enter your custom styles here */
+.employeeGanttResourceCell {
+    min-width: 0;
+    width: 100%;
+    gap: 0.0625rem;
+    justify-content: center;
+}
+
+.employeeGanttResourceCell .sapMText {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.employeeGanttEmployeeText {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    line-height: 0.9375rem;
+}
+
+.employeeGanttProjectText {
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 0.875rem;
+}
+
+.employeeGanttMetaText {
+    color: var(--sapContent_LabelColor);
+    font-size: 0.625rem;
+    line-height: 0.75rem;
+}

@@ -49,16 +49,20 @@ sap.ui.define([
             return sEmployeeId || sAllocationId || "";
         },
 
-        formatRowTitle: function (sEmployeeName, sProjectName) {
-            return sEmployeeName || sProjectName || "";
+        isEmployeeRow: function (sAllocationId) {
+            return !sAllocationId;
         },
 
-        formatRowText: function (sEmployeeId, sAllocationId, sRole) {
-            if (sEmployeeId) {
-                return sRole ? sEmployeeId + " - " + sRole : sEmployeeId;
-            }
+        isAllocationRow: function (sAllocationId) {
+            return !!sAllocationId;
+        },
 
-            return sAllocationId || "";
+        formatEmployeeMeta: function (sEmployeeId, sRole) {
+            return [sEmployeeId, sRole].filter(Boolean).join(" - ");
+        },
+
+        formatAllocationMeta: function (sAllocationId, sStatus) {
+            return [sAllocationId, this._toTitleCase(sStatus)].filter(Boolean).join(" - ");
         },
 
         formatAllocationNumber: function (iPercentage) {
@@ -125,15 +129,11 @@ sap.ui.define([
             return aLines.join("\n");
         },
 
-        formatAllocationFill: function (sStatus, sProjectName, bIsOverload) {
-            if (bIsOverload) {
-                return "sapUiNegativeElement";
-            }
-
+        formatAllocationFill: function (sStatus, sProjectName) {
             var mStatusColors = {
-                confirmed: "sapUiAccent6",
-                tentative: "sapUiAccent2",
-                planned: "sapUiAccent7"
+                confirmed: "#2f9d5c",
+                tentative: "#e9730c",
+                planned: "#0a6ed1"
             };
 
             return mStatusColors[sStatus] || this._projectColor(sProjectName);
@@ -145,6 +145,10 @@ sap.ui.define([
 
         formatAllocationStrokeWidth: function (bIsOverload) {
             return bIsOverload ? 2 : 1;
+        },
+
+        formatAllocationStrokeDasharray: function (bIsOverload) {
+            return bIsOverload ? "5,2" : "";
         },
 
         onFilterAllocations: function (oEvent) {
@@ -195,11 +199,26 @@ sap.ui.define([
                     "Overloaded (" + iPeakAllocation + "%)" :
                     "Within capacity";
                 oEmployee.allocationCount = aAllocations.length;
+                oEmployee._shapeAllocations = [];
 
                 aAllocations.forEach(function (oAllocation) {
                     oAllocation.employeeName = oEmployee.employeeName;
-                });
+                    oAllocation._shapeAllocations = [this._createShapeAllocation(oAllocation)];
+                }, this);
             }, this);
+        },
+
+        _createShapeAllocation: function (oAllocation) {
+            return {
+                allocationId: oAllocation.allocationId,
+                projectName: oAllocation.projectName,
+                startDate: oAllocation.startDate,
+                endDate: oAllocation.endDate,
+                allocationPercentage: oAllocation.allocationPercentage,
+                status: oAllocation.status,
+                employeeName: oAllocation.employeeName,
+                isOverload: oAllocation.isOverload
+            };
         },
 
         _markOverloadedAllocations: function (aAllocations) {

@@ -87,28 +87,50 @@
                                 }
                             }">
                             <table:columns>
-                                <table:Column width="16rem" sortProperty="employeeName" filterProperty="employeeName">
+                                <table:Column width="14rem" sortProperty="employeeName" filterProperty="employeeName">
                                     <m:Label text="{i18n>employeeGanttResourceColumn}"/>
                                     <table:template>
-                                        <m:ObjectIdentifier
-                                            title="{
-                                                parts: [
-                                                    {path: 'ganttModel>employeeName'},
-                                                    {path: 'ganttModel>projectName'}
-                                                ],
-                                                formatter: '.formatRowTitle'
-                                            }"
-                                            text="{
-                                                parts: [
-                                                    {path: 'ganttModel>employeeId'},
-                                                    {path: 'ganttModel>allocationId'},
-                                                    {path: 'ganttModel>role'}
-                                                ],
-                                                formatter: '.formatRowText'
-                                            }"/>
+                                        <m:VBox class="employeeGanttResourceCell">
+                                            <m:VBox visible="{path: 'ganttModel>allocationId', formatter: '.isEmployeeRow'}">
+                                                <m:Text
+                                                    class="employeeGanttEmployeeText"
+                                                    text="{ganttModel>employeeName}"
+                                                    wrapping="false"
+                                                    maxLines="1"/>
+                                                <m:Text
+                                                    class="employeeGanttMetaText"
+                                                    text="{
+                                                        parts: [
+                                                            {path: 'ganttModel>employeeId'},
+                                                            {path: 'ganttModel>role'}
+                                                        ],
+                                                        formatter: '.formatEmployeeMeta'
+                                                    }"
+                                                    wrapping="false"
+                                                    maxLines="1"/>
+                                            </m:VBox>
+                                            <m:VBox visible="{path: 'ganttModel>allocationId', formatter: '.isAllocationRow'}">
+                                                <m:Text
+                                                    class="employeeGanttProjectText"
+                                                    text="{ganttModel>projectName}"
+                                                    wrapping="false"
+                                                    maxLines="1"/>
+                                                <m:Text
+                                                    class="employeeGanttMetaText"
+                                                    text="{
+                                                        parts: [
+                                                            {path: 'ganttModel>allocationId'},
+                                                            {path: 'ganttModel>status'}
+                                                        ],
+                                                        formatter: '.formatAllocationMeta'
+                                                    }"
+                                                    wrapping="false"
+                                                    maxLines="1"/>
+                                            </m:VBox>
+                                        </m:VBox>
                                     </table:template>
                                 </table:Column>
-                                <table:Column width="7rem" hAlign="End">
+                                <table:Column width="5.5rem" hAlign="End">
                                     <m:Label text="{i18n>employeeGanttAllocationColumn}"/>
                                     <table:template>
                                         <m:ObjectNumber
@@ -117,7 +139,7 @@
                                             state="{path: 'ganttModel>isOverload', formatter: '.formatAllocationValueState'}"/>
                                     </table:template>
                                 </table:Column>
-                                <table:Column width="10rem">
+                                <table:Column width="8.5rem">
                                     <m:Label text="{i18n>employeeGanttStatusColumn}"/>
                                     <table:template>
                                         <m:ObjectStatus
@@ -138,7 +160,7 @@
                                             }"/>
                                     </table:template>
                                 </table:Column>
-                                <table:Column width="13rem">
+                                <table:Column width="9rem">
                                     <m:Label text="{i18n>employeeGanttPeriodColumn}"/>
                                     <table:template>
                                         <m:Text
@@ -165,7 +187,7 @@
                                         ],
                                         formatter: '.formatRowId'
                                     }"
-                                    shapes1="{path: 'ganttModel>allocations', templateShareable: false}">
+                                    shapes1="{path: 'ganttModel>_shapeAllocations', templateShareable: false}">
                                     <shapes1>
                                         <BaseRectangle
                                             shapeId="{ganttModel>allocationId}"
@@ -183,7 +205,7 @@
                                                 ],
                                                 formatter: '.formatAllocationTooltip'
                                             }"
-                                            height="22"
+                                            height="18"
                                             rx="4"
                                             ry="4"
                                             fill="{
@@ -196,6 +218,7 @@
                                             }"
                                             stroke="{path: 'ganttModel>isOverload', formatter: '.formatAllocationStroke'}"
                                             strokeWidth="{path: 'ganttModel>isOverload', formatter: '.formatAllocationStrokeWidth'}"
+                                            strokeDasharray="{path: 'ganttModel>isOverload', formatter: '.formatAllocationStrokeDasharray'}"
                                             selectable="true"
                                             hoverable="true"
                                             hoverFillColor="sapChart_OrderedColor_8"
