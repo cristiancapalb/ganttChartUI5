@@ -1,6 +1,6 @@
 import Opa5 from "sap/ui/test/Opa5";
 
-const sViewName = "ganttChart";
+const sViewName = "EmployeeGantt";
 
 export default class ganttChartPage extends Opa5 {
 	// Actions
@@ -9,7 +9,7 @@ export default class ganttChartPage extends Opa5 {
 	// Assertions
 	iShouldSeeThePageView() {
 		return this.waitFor({
-			id: "page",
+			id: "employeeGanttPage",
 			viewName: sViewName,
 			success: function () {
 				Opa5.assert.ok(true, "The " + sViewName + " view is displayed");
@@ -19,5 +19,4 @@ export default class ganttChartPage extends Opa5 {
 	}
 
 }
-
 

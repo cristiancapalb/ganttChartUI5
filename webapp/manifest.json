@@ -79,7 +79,7 @@
           "name": "RouteganttChart",
           "pattern": ":?query:",
           "target": [
-            "TargetganttChart"
+            "TargetEmployeeGantt"
           ]
         },
         {
