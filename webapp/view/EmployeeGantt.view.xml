@@ -205,6 +205,7 @@
                                                     {path: 'ganttModel>status'},
                                                     {path: 'ganttModel>startDate'},
                                                     {path: 'ganttModel>endDate'},
+                                                    {path: 'ganttModel>includeWeekends'},
                                                     {path: 'ganttModel>isOverload'}
                                                 ],
                                                 formatter: '.formatAllocationTooltip'

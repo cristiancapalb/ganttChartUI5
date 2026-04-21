@@ -37,6 +37,7 @@ sap.ui.define([
             this._aEmployees = this._clone(aEmployees);
             oModel.setProperty("/employees", aEmployees);
             this._expandEmployeeRows();
+            this._setSelectedVisibleHorizon();
         },
 
         _onAllocationDataFailed: function () {
@@ -114,12 +115,13 @@ sap.ui.define([
             }
         },
 
-        formatAllocationTooltip: function (sProjectName, iPercentage, sStatus, sStartDate, sEndDate, bIsOverload) {
+        formatAllocationTooltip: function (sProjectName, iPercentage, sStatus, sStartDate, sEndDate, bIncludeWeekends, bIsOverload) {
             var aLines = [
                 sProjectName,
                 "Allocation: " + iPercentage + "%",
                 "Status: " + this._toTitleCase(sStatus),
-                this._formatDateOnly(sStartDate) + " - " + this._formatDateOnly(sEndDate)
+                this._formatDateOnly(sStartDate) + " - " + this._formatDateOnly(sEndDate),
+                "Includes weekends: " + (bIncludeWeekends ? "Yes" : "No")
             ];
 
             if (bIsOverload) {
@@ -216,6 +218,7 @@ sap.ui.define([
                 projectName: oAllocation.projectName,
                 startDate: oAllocation.startDate,
                 endDate: oAllocation.endDate,
+                includeWeekends: oAllocation.includeWeekends,
                 allocationFromDate: oAllocation.allocationFromDate,
                 allocationToDate: oAllocation.allocationToDate,
                 allocationPercentage: oAllocation.allocationPercentage,
@@ -385,6 +388,13 @@ sap.ui.define([
             }));
         },
 
+        _setSelectedVisibleHorizon: function () {
+            var oZoomPeriod = this.byId("zoomPeriod");
+            var sPeriodKey = oZoomPeriod ? oZoomPeriod.getSelectedKey() : "month";
+
+            this._setVisibleHorizon(sPeriodKey);
+        },
+
         _getEarliestAllocationDate: function () {
             var oModel = this.getView().getModel("ganttModel");
             var aEmployees = oModel.getProperty("/employees") || [];
@@ -465,12 +475,32 @@ sap.ui.define([
 
         _configureDateOnlyTimeline: function () {
             var oZoomStrategy = this.byId("allocationZoom");
-            var oDayOption = ProportionTimeLineOptions["1day"];
+            var oDayOption = this._createWeekdayTimeLineOption();
+            var oTimeLineOptions = Object.assign({}, ProportionTimeLineOptions, {
+                "1day": oDayOption
+            });
 
             if (oZoomStrategy && oDayOption) {
+                oZoomStrategy.setTimeLineOptions(oTimeLineOptions);
                 oZoomStrategy.setFinestTimeLineOption(oDayOption);
                 oZoomStrategy.setTimeLineOption(oDayOption);
             }
+        },
+
+        _createWeekdayTimeLineOption: function () {
+            var oBaseDayOption = ProportionTimeLineOptions["1day"];
+
+            return {
+                innerInterval: Object.assign({}, oBaseDayOption.innerInterval, {
+                    range: 28
+                }),
+                largeInterval: Object.assign({}, oBaseDayOption.largeInterval, {
+                    pattern: "MMMM yyyy"
+                }),
+                smallInterval: Object.assign({}, oBaseDayOption.smallInterval, {
+                    pattern: "EEEEE d"
+                })
+            };
         },
 
         _toGanttBoundaryTimestamp: function (oDate) {

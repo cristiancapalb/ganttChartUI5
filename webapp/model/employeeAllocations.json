@@ -11,6 +11,7 @@
           "projectName": "Project Alpha",
           "startDate": "20240102",
           "endDate": "20240112",
+          "includeWeekends": true,
           "allocationPercentage": 100,
           "status": "confirmed"
         },
@@ -19,6 +20,7 @@
           "projectName": "Project Beta",
           "startDate": "20240108",
           "endDate": "20240119",
+          "includeWeekends": true,
           "allocationPercentage": 50,
           "status": "tentative"
         },
@@ -27,6 +29,7 @@
           "projectName": "S/4HANA Migration",
           "startDate": "20240122",
           "endDate": "20240202",
+          "includeWeekends": true,
           "allocationPercentage": 75,
           "status": "confirmed"
         }
@@ -43,6 +46,7 @@
           "projectName": "Project Delta",
           "startDate": "20240103",
           "endDate": "20240118",
+          "includeWeekends": true,
           "allocationPercentage": 75,
           "status": "confirmed"
         },
@@ -51,6 +55,7 @@
           "projectName": "Internal Enablement",
           "startDate": "20240110",
           "endDate": "20240112",
+          "includeWeekends": true,
           "allocationPercentage": 50,
           "status": "planned"
         },
@@ -59,6 +64,7 @@
           "projectName": "Project Epsilon",
           "startDate": "20240115",
           "endDate": "20240131",
+          "includeWeekends": true,
           "allocationPercentage": 50,
           "status": "tentative"
         }
@@ -75,6 +81,7 @@
           "projectName": "Platform Stabilization",
           "startDate": "20240102",
           "endDate": "20240110",
+          "includeWeekends": true,
           "allocationPercentage": 100,
           "status": "confirmed"
         },
@@ -83,6 +90,7 @@
           "projectName": "Analytics Rollout",
           "startDate": "20240111",
           "endDate": "20240126",
+          "includeWeekends": true,
           "allocationPercentage": 50,
           "status": "planned"
         },
@@ -91,6 +99,7 @@
           "projectName": "Project Apollo",
           "startDate": "20240122",
           "endDate": "20240207",
+          "includeWeekends": true,
           "allocationPercentage": 75,
           "status": "confirmed"
         }
@@ -107,6 +116,7 @@
           "projectName": "Project Mercury",
           "startDate": "20240105",
           "endDate": "20240119",
+          "includeWeekends": true,
           "allocationPercentage": 50,
           "status": "confirmed"
         },
@@ -115,6 +125,7 @@
           "projectName": "Project Atlas",
           "startDate": "20240105",
           "endDate": "20240112",
+          "includeWeekends": true,
           "allocationPercentage": 50,
           "status": "planned"
         },
@@ -123,6 +134,7 @@
           "projectName": "Project Phoenix",
           "startDate": "20240116",
           "endDate": "20240129",
+          "includeWeekends": true,
           "allocationPercentage": 100,
           "status": "confirmed"
         },
@@ -131,6 +143,7 @@
           "projectName": "Project Orion",
           "startDate": "20240201",
           "endDate": "20240208",
+          "includeWeekends": true,
           "allocationPercentage": 75,
           "status": "tentative"
         }
@@ -147,6 +160,7 @@
           "projectName": "Project Neptune",
           "startDate": "20240102",
           "endDate": "20240107",
+          "includeWeekends": true,
           "allocationPercentage": 75,
           "status": "planned"
         },
@@ -155,6 +169,7 @@
           "projectName": "Project Sigma",
           "startDate": "20240108",
           "endDate": "20240121",
+          "includeWeekends": true,
           "allocationPercentage": 100,
           "status": "confirmed"
         },
@@ -163,6 +178,7 @@
           "projectName": "Quality Support",
           "startDate": "20240118",
           "endDate": "20240125",
+          "includeWeekends": true,
           "allocationPercentage": 50,
           "status": "tentative"
         },
@@ -171,6 +187,7 @@
           "projectName": "Customer Launch",
           "startDate": "20240126",
           "endDate": "20240209",
+          "includeWeekends": true,
           "allocationPercentage": 100,
           "status": "confirmed"
         }
