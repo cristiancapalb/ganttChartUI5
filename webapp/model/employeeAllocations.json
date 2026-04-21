@@ -9,24 +9,24 @@
         {
           "allocationId": "A1",
           "projectName": "Project Alpha",
-          "startDate": "20240102080000",
-          "endDate": "20240112180000",
+          "startDate": "20240102",
+          "endDate": "20240112",
           "allocationPercentage": 100,
           "status": "confirmed"
         },
         {
           "allocationId": "A2",
           "projectName": "Project Beta",
-          "startDate": "20240108090000",
-          "endDate": "20240119170000",
+          "startDate": "20240108",
+          "endDate": "20240119",
           "allocationPercentage": 50,
           "status": "tentative"
         },
         {
           "allocationId": "A3",
           "projectName": "S/4HANA Migration",
-          "startDate": "20240122080000",
-          "endDate": "20240202160000",
+          "startDate": "20240122",
+          "endDate": "20240202",
           "allocationPercentage": 75,
           "status": "confirmed"
         }
@@ -41,24 +41,24 @@
         {
           "allocationId": "A4",
           "projectName": "Project Delta",
-          "startDate": "20240103080000",
-          "endDate": "20240118180000",
+          "startDate": "20240103",
+          "endDate": "20240118",
           "allocationPercentage": 75,
           "status": "confirmed"
         },
         {
           "allocationId": "A5",
           "projectName": "Internal Enablement",
-          "startDate": "20240110090000",
-          "endDate": "20240112170000",
+          "startDate": "20240110",
+          "endDate": "20240112",
           "allocationPercentage": 50,
           "status": "planned"
         },
         {
           "allocationId": "A6",
           "projectName": "Project Epsilon",
-          "startDate": "20240115080000",
-          "endDate": "20240131180000",
+          "startDate": "20240115",
+          "endDate": "20240131",
           "allocationPercentage": 50,
           "status": "tentative"
         }
@@ -73,24 +73,24 @@
         {
           "allocationId": "A7",
           "projectName": "Platform Stabilization",
-          "startDate": "20240102080000",
-          "endDate": "20240110170000",
+          "startDate": "20240102",
+          "endDate": "20240110",
           "allocationPercentage": 100,
           "status": "confirmed"
         },
         {
           "allocationId": "A8",
           "projectName": "Analytics Rollout",
-          "startDate": "20240111090000",
-          "endDate": "20240126180000",
+          "startDate": "20240111",
+          "endDate": "20240126",
           "allocationPercentage": 50,
           "status": "planned"
         },
         {
           "allocationId": "A9",
           "projectName": "Project Apollo",
-          "startDate": "20240122080000",
-          "endDate": "20240207170000",
+          "startDate": "20240122",
+          "endDate": "20240207",
           "allocationPercentage": 75,
           "status": "confirmed"
         }
@@ -105,32 +105,32 @@
         {
           "allocationId": "A10",
           "projectName": "Project Mercury",
-          "startDate": "20240105080000",
-          "endDate": "20240119160000",
+          "startDate": "20240105",
+          "endDate": "20240119",
           "allocationPercentage": 50,
           "status": "confirmed"
         },
         {
           "allocationId": "A11",
           "projectName": "Project Atlas",
-          "startDate": "20240105090000",
-          "endDate": "20240112170000",
+          "startDate": "20240105",
+          "endDate": "20240112",
           "allocationPercentage": 50,
           "status": "planned"
         },
         {
           "allocationId": "A12",
           "projectName": "Project Phoenix",
-          "startDate": "20240116080000",
-          "endDate": "20240129180000",
+          "startDate": "20240116",
+          "endDate": "20240129",
           "allocationPercentage": 100,
           "status": "confirmed"
         },
         {
           "allocationId": "A13",
           "projectName": "Project Orion",
-          "startDate": "20240201080000",
-          "endDate": "20240208170000",
+          "startDate": "20240201",
+          "endDate": "20240208",
           "allocationPercentage": 75,
           "status": "tentative"
         }
@@ -145,32 +145,32 @@
         {
           "allocationId": "A14",
           "projectName": "Project Neptune",
-          "startDate": "20240102080000",
-          "endDate": "20240107170000",
+          "startDate": "20240102",
+          "endDate": "20240107",
           "allocationPercentage": 75,
           "status": "planned"
         },
         {
           "allocationId": "A15",
           "projectName": "Project Sigma",
-          "startDate": "20240108080000",
-          "endDate": "20240121180000",
+          "startDate": "20240108",
+          "endDate": "20240121",
           "allocationPercentage": 100,
           "status": "confirmed"
         },
         {
           "allocationId": "A16",
           "projectName": "Quality Support",
-          "startDate": "20240118090000",
-          "endDate": "20240125170000",
+          "startDate": "20240118",
+          "endDate": "20240125",
           "allocationPercentage": 50,
           "status": "tentative"
         },
         {
           "allocationId": "A17",
           "projectName": "Customer Launch",
-          "startDate": "20240126080000",
-          "endDate": "20240209180000",
+          "startDate": "20240126",
+          "endDate": "20240209",
           "allocationPercentage": 100,
           "status": "confirmed"
         }

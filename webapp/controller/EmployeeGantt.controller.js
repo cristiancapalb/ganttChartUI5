@@ -4,8 +4,9 @@ sap.ui.define([
     "sap/gantt/misc/Format",
     "sap/gantt/config/TimeHorizon",
     "sap/m/MessageToast",
-    "sap/ui/core/format/DateFormat"
-], function (Controller, JSONModel, GanttFormat, TimeHorizon, MessageToast, DateFormat) {
+    "sap/ui/core/format/DateFormat",
+    "sap/gantt/axistime/ProportionTimeLineOptions"
+], function (Controller, JSONModel, GanttFormat, TimeHorizon, MessageToast, DateFormat, ProportionTimeLineOptions) {
     "use strict";
 
     return Controller.extend("ganttchartdemo.controller.EmployeeGantt", {
@@ -14,6 +15,7 @@ sap.ui.define([
             this._oDateFormat = DateFormat.getDateInstance({
                 pattern: "MMM d, yyyy"
             });
+            this._configureDateOnlyTimeline();
 
             var oModel = new JSONModel();
             oModel.attachRequestCompleted(this._onAllocationDataLoaded, this);
@@ -41,8 +43,18 @@ sap.ui.define([
             MessageToast.show("Employee allocation data could not be loaded.");
         },
 
-        formatAbapTimestamp: function (sTimestamp) {
-            return sTimestamp ? GanttFormat.abapTimestampToDate(sTimestamp) : null;
+        formatAllocationStartDate: function (sDate) {
+            return this._parseDateOnly(sDate);
+        },
+
+        formatAllocationEndDate: function (sDate) {
+            var oEndDate = this._parseDateOnly(sDate);
+
+            if (oEndDate) {
+                oEndDate.setDate(oEndDate.getDate() + 1);
+            }
+
+            return oEndDate;
         },
 
         formatRowId: function (sEmployeeId, sAllocationId) {
@@ -219,17 +231,24 @@ sap.ui.define([
             var iPeakAllocation = 0;
 
             aAllocations.forEach(function (oAllocation) {
+                var oStartDate = this.formatAllocationStartDate(oAllocation.startDate);
+                var oEndDate = this.formatAllocationEndDate(oAllocation.endDate);
+
+                if (!oStartDate || !oEndDate) {
+                    return;
+                }
+
                 aEvents.push({
-                    time: oAllocation.startDate,
+                    time: oStartDate.getTime(),
                     type: "start",
                     allocation: oAllocation
                 });
                 aEvents.push({
-                    time: oAllocation.endDate,
+                    time: oEndDate.getTime(),
                     type: "end",
                     allocation: oAllocation
                 });
-            });
+            }, this);
 
             aEvents.sort(function (oFirst, oSecond) {
                 if (oFirst.time === oSecond.time) {
@@ -359,11 +378,10 @@ sap.ui.define([
             oVisibleStart.setHours(0, 0, 0, 0);
             oVisibleEnd.setHours(0, 0, 0, 0);
             oVisibleEnd.setDate(oVisibleEnd.getDate() + iDays);
-            oVisibleEnd.setSeconds(oVisibleEnd.getSeconds() - 1);
 
             oZoomStrategy.setVisibleHorizon(new TimeHorizon({
-                startTime: this._toAbapTimestamp(oVisibleStart),
-                endTime: this._toAbapTimestamp(oVisibleEnd)
+                startTime: this._toGanttBoundaryTimestamp(oVisibleStart),
+                endTime: this._toGanttBoundaryTimestamp(oVisibleEnd)
             }));
         },
 
@@ -375,7 +393,7 @@ sap.ui.define([
             aEmployees.forEach(function (oEmployee) {
                 (oEmployee.allocations || []).forEach(function (oAllocation) {
                     if (oAllocation.startDate) {
-                        aDates.push(this.formatAbapTimestamp(oAllocation.startDate));
+                        aDates.push(this._parseDateOnly(oAllocation.startDate));
                     }
                 }, this);
             }, this);
@@ -424,19 +442,43 @@ sap.ui.define([
         },
 
         _formatDateOnly: function (sTimestamp) {
-            var oDate = this.formatAbapTimestamp(sTimestamp);
+            var oDate = this._parseDateOnly(sTimestamp);
 
             return oDate ? this._oDateFormat.format(oDate) : "";
         },
 
-        _toAbapTimestamp: function (oDate) {
+        _parseDateOnly: function (sDate) {
+            if (!sDate) {
+                return null;
+            }
+
+            if (sDate.length === 8) {
+                return new Date(
+                    Number(sDate.slice(0, 4)),
+                    Number(sDate.slice(4, 6)) - 1,
+                    Number(sDate.slice(6, 8))
+                );
+            }
+
+            return GanttFormat.abapTimestampToDate(sDate);
+        },
+
+        _configureDateOnlyTimeline: function () {
+            var oZoomStrategy = this.byId("allocationZoom");
+            var oDayOption = ProportionTimeLineOptions["1day"];
+
+            if (oZoomStrategy && oDayOption) {
+                oZoomStrategy.setFinestTimeLineOption(oDayOption);
+                oZoomStrategy.setTimeLineOption(oDayOption);
+            }
+        },
+
+        _toGanttBoundaryTimestamp: function (oDate) {
             return [
                 oDate.getFullYear(),
                 this._pad(oDate.getMonth() + 1),
                 this._pad(oDate.getDate()),
-                this._pad(oDate.getHours()),
-                this._pad(oDate.getMinutes()),
-                this._pad(oDate.getSeconds())
+                "000000"
             ].join("");
         },
 

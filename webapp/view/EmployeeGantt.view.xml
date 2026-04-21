@@ -50,7 +50,7 @@
                     height="100%"
                     width="100%"
                     displayType="Both"
-                    selectionPanelSize="38%"
+                    selectionPanelSize="42%"
                     shapeSelectionMode="Single"
                     shapeSelectionChange=".onShapeSelectionChange"
                     enableCursorLine="true"
@@ -63,12 +63,12 @@
                             <axistime:totalHorizon>
                                 <config:TimeHorizon
                                     startTime="20231225000000"
-                                    endTime="20240215000000"/>
+                                    endTime="20240216000000"/>
                             </axistime:totalHorizon>
                             <axistime:visibleHorizon>
                                 <config:TimeHorizon
                                     startTime="20240101000000"
-                                    endTime="20240131235959"/>
+                                    endTime="20240201000000"/>
                             </axistime:visibleHorizon>
                         </axistime:ProportionZoomStrategy>
                     </axisTimeStrategy>
@@ -87,7 +87,7 @@
                                 }
                             }">
                             <table:columns>
-                                <table:Column width="12rem" sortProperty="employeeName" filterProperty="employeeName">
+                                <table:Column width="11rem" sortProperty="employeeName" filterProperty="employeeName">
                                     <m:Label text="{i18n>employeeGanttResourceColumn}"/>
                                     <table:template>
                                         <m:VBox class="employeeGanttResourceCell">
@@ -130,7 +130,7 @@
                                         </m:VBox>
                                     </table:template>
                                 </table:Column>
-                                <table:Column width="5.5rem" hAlign="End">
+                                <table:Column width="5rem" hAlign="End">
                                     <m:Label text="{i18n>employeeGanttAllocationColumn}"/>
                                     <table:template>
                                         <m:ObjectNumber
@@ -139,7 +139,7 @@
                                             state="{path: 'ganttModel>isOverload', formatter: '.formatAllocationValueState'}"/>
                                     </table:template>
                                 </table:Column>
-                                <table:Column width="7.5rem">
+                                <table:Column width="6.5rem">
                                     <m:Label text="{i18n>employeeGanttStatusColumn}"/>
                                     <table:template>
                                         <m:ObjectStatus
@@ -160,7 +160,7 @@
                                             }"/>
                                     </table:template>
                                 </table:Column>
-                                <table:Column width="6.5rem" sortProperty="allocationFromDate">
+                                <table:Column width="7rem" sortProperty="allocationFromDate">
                                     <m:Label text="{i18n>employeeGanttAllocationFromColumn}"/>
                                     <table:template>
                                         <m:Text
@@ -169,7 +169,7 @@
                                             maxLines="1"/>
                                     </table:template>
                                 </table:Column>
-                                <table:Column width="6.5rem" sortProperty="allocationToDate">
+                                <table:Column width="7rem" sortProperty="allocationToDate">
                                     <m:Label text="{i18n>employeeGanttAllocationToColumn}"/>
                                     <table:template>
                                         <m:Text
@@ -195,8 +195,8 @@
                                     <shapes1>
                                         <BaseRectangle
                                             shapeId="{ganttModel>allocationId}"
-                                            time="{path: 'ganttModel>startDate', formatter: '.formatAbapTimestamp'}"
-                                            endTime="{path: 'ganttModel>endDate', formatter: '.formatAbapTimestamp'}"
+                                            time="{path: 'ganttModel>startDate', formatter: '.formatAllocationStartDate'}"
+                                            endTime="{path: 'ganttModel>endDate', formatter: '.formatAllocationEndDate'}"
                                             title="{ganttModel>projectName}"
                                             tooltip="{
                                                 parts: [
