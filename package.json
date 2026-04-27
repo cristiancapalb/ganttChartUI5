@@ -11,11 +11,14 @@
   "devDependencies": {
     "@sap-ux/eslint-plugin-fiori-tools": "^9.0.0",
     "@sap-ux/ui5-middleware-fe-mockserver": "^2.4.11",
-    "@sap/ux-ui5-tooling": "1",
+    "@sap/ux-ui5-tooling": "^1.23.0",
     "@sapui5/types": "~1.147.0",
     "@ui5/cli": "^4.0.33",
     "eslint": "^9",
+    "mbt": "^1.2.29",
+    "rimraf": "^5.0.5",
     "typescript": "^5.9.3",
+    "ui5-task-zipper": "^3.4.x",
     "ui5-tooling-transpile": "^3.10.0"
   },
   "scripts": {
@@ -26,13 +29,16 @@
     "ts-typecheck": "tsc --noEmit",
     "prestart": "npm run ts-typecheck",
     "prebuild": "npm run ts-typecheck",
-    "deploy": "fiori verify",
+    "deploy": "fiori cfDeploy",
     "deploy-config": "fiori add deploy-config",
     "start-noflp": "fiori run --open \"/index.html?sap-ui-xx-viewCache=false\"",
     "int-test": "fiori run --open \"test/integration/opaTests.qunit.html\"",
     "start-variants-management": "fiori run --open \"/preview.html#app-preview\"",
     "unit-test": "fiori run --open \"test/unit/unitTests.qunit.html\"",
-    "start-mock": "fiori run --config ./ui5-mock.yaml --open \"test/flp.html#app-preview\""
+    "start-mock": "fiori run --config ./ui5-mock.yaml --open \"test/flp.html#app-preview\"",
+    "build:cf": "ui5 build preload --clean-dest --config ui5-deploy.yaml --include-task=generateCachebusterInfo",
+    "build:mta": "rimraf resources mta_archives && mbt build",
+    "undeploy": "cf undeploy ganttchartdemo --delete-services --delete-service-keys --delete-service-brokers"
   },
   "sapuxLayer": "CUSTOMER_BASE"
 }
