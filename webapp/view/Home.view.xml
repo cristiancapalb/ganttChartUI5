@@ -1,0 +1,77 @@
+<mvc:View
+    controllerName="ganttchartdemo.controller.Home"
+    displayBlock="true"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page
+        id="homePage"
+        title="{i18n>homeTitle}"
+        class="sapUiResponsiveContentPadding">
+        <content>
+            <VBox
+                class="homePageLayout sapUiSmallMargin"
+                renderType="Bare">
+                <Title
+                    text="{i18n>homeWelcomeTitle}"
+                    level="H2"
+                    titleStyle="H2"
+                    class="sapUiTinyMarginBottom"/>
+                <Text
+                    text="{i18n>homeWelcomeText}"
+                    class="homeIntroText sapUiSmallMarginBottom"/>
+                <FlexBox
+                    id="homeTileContainer"
+                    class="homeTileContainer"
+                    fitContainer="true"
+                    renderType="Bare"
+                    wrap="Wrap">
+                    <GenericTile
+                        id="ganttAppTile"
+                        class="sapUiTinyMarginEnd sapUiSmallMarginBottom"
+                        frameType="OneByOne"
+                        header="{i18n>homeGanttTileHeader}"
+                        subheader="{i18n>homeGanttTileSubheader}"
+                        press=".onOpenGanttApp">
+                        <tileContent>
+                            <TileContent footer="{i18n>homeGanttTileFooter}">
+                                <content>
+                                    <ImageContent src="sap-icon://horizontal-bar-chart"/>
+                                </content>
+                            </TileContent>
+                        </tileContent>
+                    </GenericTile>
+                    <GenericTile
+                        id="profileOverviewTile"
+                        class="sapUiTinyMarginEnd sapUiSmallMarginBottom"
+                        frameType="OneByOne"
+                        header="{i18n>homeProfileTileHeader}"
+                        subheader="{i18n>homeProfileTileSubheader}"
+                        press=".onOpenProfileOverview">
+                        <tileContent>
+                            <TileContent footer="{i18n>homeProfileTileFooter}">
+                                <content>
+                                    <ImageContent src="sap-icon://person-placeholder"/>
+                                </content>
+                            </TileContent>
+                        </tileContent>
+                    </GenericTile>
+                    <GenericTile
+                        id="projectConfigurationTile"
+                        class="sapUiTinyMarginEnd sapUiSmallMarginBottom"
+                        frameType="OneByOne"
+                        header="{i18n>homeProjectConfigTileHeader}"
+                        subheader="{i18n>homeProjectConfigTileSubheader}"
+                        press=".onOpenProjectConfiguration">
+                        <tileContent>
+                            <TileContent footer="{i18n>homeProjectConfigTileFooter}">
+                                <content>
+                                    <ImageContent src="sap-icon://action-settings"/>
+                                </content>
+                            </TileContent>
+                        </tileContent>
+                    </GenericTile>
+                </FlexBox>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>
