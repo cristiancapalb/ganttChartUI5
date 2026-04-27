@@ -29,3 +29,35 @@
     font-size: 0.625rem;
     line-height: 0.75rem;
 }
+
+.homePageLayout,
+.homeDetailPage {
+    max-width: 72rem;
+}
+
+.homeIntroText {
+    color: var(--sapContent_LabelColor);
+}
+
+.homeTileContainer {
+    gap: 0.5rem;
+}
+
+.projectConfigurationForm {
+    max-width: 28rem;
+}
+
+.employeeProfileMetaText {
+    color: var(--sapContent_LabelColor);
+}
+
+.employeeProfileLevelRow {
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+}
+
+.employeeProfileLevelValue {
+    min-width: 2.5rem;
+    text-align: end;
+    white-space: nowrap;
+}

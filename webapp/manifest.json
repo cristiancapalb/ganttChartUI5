@@ -77,10 +77,10 @@
       },
       "routes": [
         {
-          "name": "RouteganttChart",
+          "name": "RouteHome",
           "pattern": ":?query:",
           "target": [
-            "TargetEmployeeGantt"
+            "TargetHome"
           ]
         },
         {
@@ -89,9 +89,41 @@
           "target": [
             "TargetEmployeeGantt"
           ]
+        },
+        {
+          "name": "RouteProfileOverview",
+          "pattern": "profile-overview",
+          "target": [
+            "TargetProfileOverview"
+          ]
+        },
+        {
+          "name": "RouteProfileDetail",
+          "pattern": "profile-overview/{employeeId}",
+          "target": [
+            "TargetProfileDetail"
+          ]
+        },
+        {
+          "name": "RouteProjectConfiguration",
+          "pattern": "project-configuration",
+          "target": [
+            "TargetProjectConfiguration"
+          ]
+        },
+        {
+          "name": "RouteProjectEdit",
+          "pattern": "project-configuration/{projectId}",
+          "target": [
+            "TargetProjectEdit"
+          ]
         }
       ],
       "targets": {
+        "TargetHome": {
+          "id": "Home",
+          "name": "Home"
+        },
         "TargetganttChart": {
           "id": "ganttChart",
           "name": "ganttChart"
@@ -99,6 +131,22 @@
         "TargetEmployeeGantt": {
           "id": "EmployeeGantt",
           "name": "EmployeeGantt"
+        },
+        "TargetProfileOverview": {
+          "id": "ProfileOverview",
+          "name": "ProfileOverview"
+        },
+        "TargetProfileDetail": {
+          "id": "ProfileDetail",
+          "name": "ProfileDetail"
+        },
+        "TargetProjectConfiguration": {
+          "id": "ProjectConfiguration",
+          "name": "ProjectConfiguration"
+        },
+        "TargetProjectEdit": {
+          "id": "ProjectEdit",
+          "name": "ProjectEdit"
         }
       }
     },

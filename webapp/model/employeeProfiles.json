@@ -1,0 +1,229 @@
+{
+  "employees": [
+    {
+      "employeeId": "E1",
+      "employeeName": "John Doe",
+      "role": "Senior UI5 Developer",
+      "department": "Delivery",
+      "location": "Bucharest",
+      "availability": "32 hours this week",
+      "utilization": 86,
+      "skills": [
+        {
+          "name": "SAP Fiori UX",
+          "level": 5
+        },
+        {
+          "name": "Gantt planning",
+          "level": 4
+        },
+        {
+          "name": "OData integration",
+          "level": 4
+        },
+        {
+          "name": "Accessibility review",
+          "level": 3
+        }
+      ],
+      "technologies": [
+        {
+          "name": "SAPUI5",
+          "level": 5
+        },
+        {
+          "name": "TypeScript",
+          "level": 4
+        },
+        {
+          "name": "SAP Gateway",
+          "level": 4
+        },
+        {
+          "name": "QUnit and OPA5",
+          "level": 3
+        }
+      ]
+    },
+    {
+      "employeeId": "E2",
+      "employeeName": "Priya Shah",
+      "role": "Solution Architect",
+      "department": "Architecture",
+      "location": "Bangalore",
+      "availability": "24 hours this week",
+      "utilization": 78,
+      "skills": [
+        {
+          "name": "Solution design",
+          "level": 5
+        },
+        {
+          "name": "Stakeholder alignment",
+          "level": 5
+        },
+        {
+          "name": "Integration architecture",
+          "level": 4
+        },
+        {
+          "name": "Technical governance",
+          "level": 4
+        }
+      ],
+      "technologies": [
+        {
+          "name": "SAP BTP",
+          "level": 5
+        },
+        {
+          "name": "SAP Integration Suite",
+          "level": 4
+        },
+        {
+          "name": "CAP",
+          "level": 4
+        },
+        {
+          "name": "SAP S/4HANA",
+          "level": 4
+        }
+      ]
+    },
+    {
+      "employeeId": "E3",
+      "employeeName": "Miguel Torres",
+      "role": "Backend Developer",
+      "department": "Engineering",
+      "location": "Madrid",
+      "availability": "28 hours this week",
+      "utilization": 82,
+      "skills": [
+        {
+          "name": "Service design",
+          "level": 4
+        },
+        {
+          "name": "Performance tuning",
+          "level": 5
+        },
+        {
+          "name": "Data modeling",
+          "level": 4
+        },
+        {
+          "name": "Release support",
+          "level": 3
+        }
+      ],
+      "technologies": [
+        {
+          "name": "Node.js",
+          "level": 5
+        },
+        {
+          "name": "CAP",
+          "level": 4
+        },
+        {
+          "name": "HANA Cloud",
+          "level": 4
+        },
+        {
+          "name": "REST APIs",
+          "level": 5
+        }
+      ]
+    },
+    {
+      "employeeId": "E4",
+      "employeeName": "Emma Novak",
+      "role": "QA Lead",
+      "department": "Quality",
+      "location": "Prague",
+      "availability": "20 hours this week",
+      "utilization": 91,
+      "skills": [
+        {
+          "name": "Test strategy",
+          "level": 5
+        },
+        {
+          "name": "Regression planning",
+          "level": 5
+        },
+        {
+          "name": "Exploratory testing",
+          "level": 4
+        },
+        {
+          "name": "Defect triage",
+          "level": 4
+        }
+      ],
+      "technologies": [
+        {
+          "name": "OPA5",
+          "level": 4
+        },
+        {
+          "name": "QUnit",
+          "level": 4
+        },
+        {
+          "name": "Playwright",
+          "level": 3
+        },
+        {
+          "name": "SAP Cloud ALM",
+          "level": 4
+        }
+      ]
+    },
+    {
+      "employeeId": "E5",
+      "employeeName": "Chen Wei",
+      "role": "Integration Consultant",
+      "department": "Integration",
+      "location": "Singapore",
+      "availability": "30 hours this week",
+      "utilization": 88,
+      "skills": [
+        {
+          "name": "Interface mapping",
+          "level": 5
+        },
+        {
+          "name": "Troubleshooting",
+          "level": 4
+        },
+        {
+          "name": "API governance",
+          "level": 4
+        },
+        {
+          "name": "Cutover support",
+          "level": 3
+        }
+      ],
+      "technologies": [
+        {
+          "name": "SAP Integration Suite",
+          "level": 5
+        },
+        {
+          "name": "Cloud Integration",
+          "level": 5
+        },
+        {
+          "name": "Event Mesh",
+          "level": 3
+        },
+        {
+          "name": "Postman",
+          "level": 4
+        }
+      ]
+    }
+  ]
+}

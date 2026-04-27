@@ -1,0 +1,191 @@
+{
+  "projects": [
+    {
+      "id": "project-alpha",
+      "name": "Project Alpha",
+      "owner": "John Doe",
+      "status": "confirmed",
+      "startDate": "2024-01-02",
+      "endDate": "2024-01-12",
+      "timelineScale": "month",
+      "capacityThreshold": 100,
+      "includeWeekends": true
+    },
+    {
+      "id": "project-beta",
+      "name": "Project Beta",
+      "owner": "John Doe",
+      "status": "tentative",
+      "startDate": "2024-01-08",
+      "endDate": "2024-01-19",
+      "timelineScale": "week",
+      "capacityThreshold": 80,
+      "includeWeekends": true
+    },
+    {
+      "id": "s4hana-migration",
+      "name": "S/4HANA Migration",
+      "owner": "John Doe",
+      "status": "confirmed",
+      "startDate": "2024-01-22",
+      "endDate": "2024-02-02",
+      "timelineScale": "month",
+      "capacityThreshold": 100,
+      "includeWeekends": false
+    },
+    {
+      "id": "project-delta",
+      "name": "Project Delta",
+      "owner": "Priya Shah",
+      "status": "confirmed",
+      "startDate": "2024-01-03",
+      "endDate": "2024-01-18",
+      "timelineScale": "month",
+      "capacityThreshold": 100,
+      "includeWeekends": true
+    },
+    {
+      "id": "internal-enablement",
+      "name": "Internal Enablement",
+      "owner": "Priya Shah",
+      "status": "planned",
+      "startDate": "2024-01-10",
+      "endDate": "2024-01-12",
+      "timelineScale": "week",
+      "capacityThreshold": 60,
+      "includeWeekends": false
+    },
+    {
+      "id": "project-epsilon",
+      "name": "Project Epsilon",
+      "owner": "Priya Shah",
+      "status": "tentative",
+      "startDate": "2024-01-15",
+      "endDate": "2024-01-31",
+      "timelineScale": "month",
+      "capacityThreshold": 80,
+      "includeWeekends": true
+    },
+    {
+      "id": "platform-stabilization",
+      "name": "Platform Stabilization",
+      "owner": "Miguel Torres",
+      "status": "confirmed",
+      "startDate": "2024-01-02",
+      "endDate": "2024-01-10",
+      "timelineScale": "week",
+      "capacityThreshold": 100,
+      "includeWeekends": true
+    },
+    {
+      "id": "analytics-rollout",
+      "name": "Analytics Rollout",
+      "owner": "Miguel Torres",
+      "status": "planned",
+      "startDate": "2024-01-11",
+      "endDate": "2024-01-26",
+      "timelineScale": "month",
+      "capacityThreshold": 70,
+      "includeWeekends": false
+    },
+    {
+      "id": "project-apollo",
+      "name": "Project Apollo",
+      "owner": "Miguel Torres",
+      "status": "confirmed",
+      "startDate": "2024-01-22",
+      "endDate": "2024-02-07",
+      "timelineScale": "month",
+      "capacityThreshold": 100,
+      "includeWeekends": true
+    },
+    {
+      "id": "project-mercury",
+      "name": "Project Mercury",
+      "owner": "Emma Novak",
+      "status": "confirmed",
+      "startDate": "2024-01-05",
+      "endDate": "2024-01-19",
+      "timelineScale": "week",
+      "capacityThreshold": 90,
+      "includeWeekends": true
+    },
+    {
+      "id": "project-atlas",
+      "name": "Project Atlas",
+      "owner": "Emma Novak",
+      "status": "planned",
+      "startDate": "2024-01-05",
+      "endDate": "2024-01-12",
+      "timelineScale": "week",
+      "capacityThreshold": 60,
+      "includeWeekends": false
+    },
+    {
+      "id": "project-phoenix",
+      "name": "Project Phoenix",
+      "owner": "Emma Novak",
+      "status": "confirmed",
+      "startDate": "2024-01-16",
+      "endDate": "2024-01-29",
+      "timelineScale": "month",
+      "capacityThreshold": 100,
+      "includeWeekends": true
+    },
+    {
+      "id": "project-orion",
+      "name": "Project Orion",
+      "owner": "Emma Novak",
+      "status": "tentative",
+      "startDate": "2024-02-01",
+      "endDate": "2024-02-08",
+      "timelineScale": "week",
+      "capacityThreshold": 75,
+      "includeWeekends": true
+    },
+    {
+      "id": "project-neptune",
+      "name": "Project Neptune",
+      "owner": "Chen Wei",
+      "status": "planned",
+      "startDate": "2024-01-02",
+      "endDate": "2024-01-07",
+      "timelineScale": "week",
+      "capacityThreshold": 75,
+      "includeWeekends": true
+    },
+    {
+      "id": "project-sigma",
+      "name": "Project Sigma",
+      "owner": "Chen Wei",
+      "status": "confirmed",
+      "startDate": "2024-01-08",
+      "endDate": "2024-01-21",
+      "timelineScale": "month",
+      "capacityThreshold": 100,
+      "includeWeekends": true
+    },
+    {
+      "id": "quality-support",
+      "name": "Quality Support",
+      "owner": "Chen Wei",
+      "status": "tentative",
+      "startDate": "2024-01-18",
+      "endDate": "2024-01-25",
+      "timelineScale": "week",
+      "capacityThreshold": 70,
+      "includeWeekends": false
+    },
+    {
+      "id": "customer-launch",
+      "name": "Customer Launch",
+      "owner": "Chen Wei",
+      "status": "confirmed",
+      "startDate": "2024-01-26",
+      "endDate": "2024-02-09",
+      "timelineScale": "month",
+      "capacityThreshold": 100,
+      "includeWeekends": true
+    }
+  ]
+}
